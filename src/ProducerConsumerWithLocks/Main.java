@@ -1,9 +1,12 @@
-package ProducerConsumer;
+package ProducerConsumerWithLocks;
+
+
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
 
     public static void main(String[] args){
-        SharedResource sharedResource = new SharedResource(5);
+        SharedResource sharedResource = new SharedResource(5, new ReentrantLock());
 
         Thread producerThread = new Thread(() -> {
             for(int i =0; i < 10; ++i){
@@ -12,14 +15,14 @@ public class Main {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                sharedResource.addItem(i);
+                sharedResource.produceItem(i);
             }
         });
 
         Thread consumerThread = new Thread(() -> {
             for(int i =0; i < 10; ++i){
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
